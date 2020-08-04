@@ -1,5 +1,16 @@
+### Hi there, I'm [Panayiotis!](https://panayiotisleon1.wixsite.com/eportfolio) 👋
+
+- 🔭 I’m currently ~working~ looking for work. 
+- 🌱 I’m currently learning R programming, data mining and cloud computing concepts.
+- 👯 I’m looking to collaborate on interesting projects.
+- 💬 Ask me about anything (and let's hope I can answer your question 😄).
+- 📫 How to reach me: [LinkedIn](https://www.linkedin.com/in/panayiotis-leon/)
+- ⚡ Fun fact: Upcoming trillionaire ...
 
 ## Panayiotis' Community Chess Tournament
+![](https://img.shields.io/badge/Moves%20played-510-blue)
+![](https://img.shields.io/badge/Completed%20games-27-brightgreen)
+![](https://img.shields.io/badge/Total%20players-164-orange)
 
 **Game is in progress.** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a white piece.
 
@@ -50,3 +61,9 @@ Raise an [issue](https://github.com/Ghost-8D/Ghost-8D/issues), and include the t
 | Moves | Who |
 | ----- | --- |
 | ¯\\_(ツ)_/¯ | History temporarily unavailable. |
+
+
+
+[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true&show_icons=true&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) 
+
+[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Ghost-8D&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats)
