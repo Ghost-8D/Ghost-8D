@@ -4,7 +4,7 @@
 - 🌱 I’m currently learning R programming, data mining and cloud computing concepts.
 - 👯 I’m looking to collaborate on interesting projects.
 - 💬 Ask me about anything (and let's hope I can answer your question 😄).
-- 📫 How to reach me: ![LinkedIn](https://www.linkedin.com/in/panayiotis-leon/)
+- 📫 How to reach me: [LinkedIn](https://www.linkedin.com/in/panayiotis-leon/)
 - ⚡ Fun fact: Upcoming trillionaire ...
 
 ## Panayiotis' Community Chess Tournament
