@@ -345,8 +345,18 @@ jobs:
                         end
 
           new_readme = <<~HTML
+          
+            ### Hi there, I'm [Panayiotis!](https://Ghost-8D.github.io) 👋
 
-            ## Panayiotis' Community Chess Tournament
+            - 🔭 I’m currently ~working~ looking for work. 
+            - 🌱 I’m currently learning R programming, data mining and cloud computing concepts.
+            - 👯 I’m looking to collaborate on interesting projects.
+            - 💬 Ask me about anything (and let's hope I can answer your question 😄).
+            - 📫 How to reach me: [LinkedIn](https://www.linkedin.com/in/panayiotis-leon/)
+            - ⚡ Fun fact: Upcoming trillionaire ...
+
+
+            ## Panayiotis' Community Chess Tournament (stolen from @timburgan)
 
             **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black' : 'white'} piece.
 
@@ -464,8 +474,11 @@ jobs:
               new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
           end
           
-          new_readme.concat "\n[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true&show_icons=true&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) \n"
-
+          # 
+          # Add stats 
+          # 
+          new_readme.concat "\n If you want to show off your stats check [this repo](https://github.com/anuraghazra/github-readme-stats)\n"
+          new_readme.concat "[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true&show_icons=true&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) \n"
           new_readme.concat "[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Ghost-8D&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) \n"
 
 
