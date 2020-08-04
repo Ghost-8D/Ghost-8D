@@ -55,4 +55,4 @@ Raise an [issue](https://github.com/Ghost-8D/Ghost-8D/issues), and include the t
 
 [![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true&show_icons=true&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) 
 
-[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Ghost-8D&title_color=33cccc&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats)
+[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Ghost-8D&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats)
