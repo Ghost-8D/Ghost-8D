@@ -50,3 +50,5 @@ Raise an [issue](https://github.com/Ghost-8D/Ghost-8D/issues), and include the t
 | Moves | Who |
 | ----- | --- |
 | ¯\\_(ツ)_/¯ | History temporarily unavailable. |
+
+[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D)](https://github.com/anuraghazra/github-readme-stats)
