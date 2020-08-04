@@ -8,6 +8,9 @@
 - ⚡ Fun fact: Upcoming trillionaire ...
 
 ## Panayiotis' Community Chess Tournament
+![](https://img.shields.io/badge/Moves%20played-510-blue)
+![](https://img.shields.io/badge/Completed%20games-27-brightgreen)
+![](https://img.shields.io/badge/Total%20players-164-orange)
 
 **Game is in progress.** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a white piece.
 
