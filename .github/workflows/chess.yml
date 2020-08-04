@@ -468,7 +468,7 @@ jobs:
 
           new_readme.concat <<~HTML
 
-            ** :trophy: Top 20 Leaderboard: Most moves across all games, except me.**
+            ** :trophy: Top 20 Leaderboard: Most moves across all games, except me. **
 
             | Moves | Who |
             | ----- | --- |
@@ -484,9 +484,11 @@ jobs:
           end
           
           new_readme.concat <<~HTML
-              ** :trophy: Leaderboard: Top 10 players with the most game winning moves :1st_place_medal:**
+          
+              ** :trophy: Leaderboard: Top 10 players with the most game winning moves :1st_place_medal: **
+              
               | Player | Wins |
-              | ------ | -----|
+              | ------ | ---- |
           HTML
           
           #if issues.present?
