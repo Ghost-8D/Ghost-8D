@@ -229,9 +229,7 @@ jobs:
               if game.over?
                 # add label = end
                 @octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
-                game_stats = { moves: 0, players: [], start_time: nil, end_
-                
-                e: nil }
+                game_stats = { moves: 0, players: [], start_time: nil, end_time: nil }
                 issues&.each do |issue|
                   break if issue.title.start_with? 'chess|new'
                   if game_stats[:moves] == 0
