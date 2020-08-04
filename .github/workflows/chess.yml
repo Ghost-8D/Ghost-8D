@@ -196,7 +196,6 @@ jobs:
               # ---------------------------------------
               begin
                   game.move(CHESS_USER_MOVE) # ie move('e2e4', …, 'b1c3')
-                  #metadata[:all_players][@#{issue.user.login}] += 1
               rescue Chess::IllegalMoveError => e
                   comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Whaaa.. '#{CHESS_USER_MOVE}' is an invalid move! Usually this is because someone squeezed a move in just before you."
                   error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
@@ -345,7 +344,7 @@ jobs:
                           'Game terminated. Something went wrong.'
                         end
 
-          total_moves_played = game_stats[:moves] #metadata[:all_players].values.sum
+          total_moves_played = game_stats[:moves].values.sum
           #completed_games = metadata[:completed_games]
           #game_winning_players = metadata[:game_winning_players].sort_by { |_, wins| -wins }
           # ![](https://img.shields.io/badge/Completed%20games-#{completed_games}-brightgreen)
