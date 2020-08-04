@@ -43,9 +43,6 @@ Raise an [issue](https://github.com/Ghost-8D/Ghost-8D/issues), and include the t
 
 | Move  | Who |
 | ----- | --- |
-|  to  | [@Ghost-8D](https://github.com/Ghost-8D) |
-| A7 to A6 | [@Ghost-8D](https://github.com/Ghost-8D) |
-| G2 to G3 | [@Ghost-8D](https://github.com/Ghost-8D) |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
