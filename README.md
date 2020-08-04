@@ -43,9 +43,10 @@ Raise an [issue](https://github.com/Ghost-8D/Ghost-8D/issues), and include the t
 
 | Move  | Who |
 | ----- | --- |
-|  to  | [@Ghost-8D](https://github.com/Ghost-8D) |
+| ¯\\_(ツ)_/¯ | History temporarily unavailable. |
 
 **Top 20 Leaderboard: Most moves across all games, except me.**
 
 | Moves | Who |
 | ----- | --- |
+| ¯\\_(ツ)_/¯ | History temporarily unavailable. |
