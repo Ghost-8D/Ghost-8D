@@ -344,10 +344,10 @@ jobs:
                           'Game terminated. Something went wrong.'
                         end
 
-          #total_moves_played = game_stats[:moves].values.sum
+          total_moves_played = game_stats[:moves]
           #completed_games = metadata[:completed_games]
           #game_winning_players = metadata[:game_winning_players].sort_by { |_, wins| -wins }
-          # ![](https://img.shields.io/badge/Moves%20played-#{total_moves_played}-blue)
+          # 
           # ![](https://img.shields.io/badge/Completed%20games-#{completed_games}-brightgreen)
           # ![](https://img.shields.io/badge/Total%20players-#{metadata[:all_players].size}-orange)
 
@@ -364,7 +364,7 @@ jobs:
 
 
             ## :game_die: Join my Community Chess Tournament! (stolen from [@timburgan](https://github.com/timburgan/timburgan))
-            
+            ![](https://img.shields.io/badge/Moves%20played-#{total_moves_played}-blue)
             
 
             **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black' : 'white'} piece.
@@ -440,7 +440,7 @@ jobs:
 
             Raise an [issue](https://github.com/#{ENV.fetch('REPOSITORY')}/issues), and include the text _cc @Ghost-8D_.
 
-            **Last few moves, this game**
+            ** :alarm_clock: Most recent moves of this game (from recent to older)**
 
             | Move  | Who |
             | ----- | --- |
