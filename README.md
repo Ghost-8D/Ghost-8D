@@ -53,4 +53,4 @@ Raise an [issue](https://github.com/Ghost-8D/Ghost-8D/issues), and include the t
 
 
 
-[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true)](https://github.com/anuraghazra/github-readme-stats)
+[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true&show_icons=true?theme=merko)](https://github.com/anuraghazra/github-readme-stats)
