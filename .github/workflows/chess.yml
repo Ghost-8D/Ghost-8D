@@ -363,7 +363,7 @@ jobs:
             - ⚡ Fun fact: Upcoming trillionaire ...
 
 
-            ## :game_die: Join my Community Chess Tournament! (stolen from @timburgan)
+            ## :game_die: Join my Community Chess Tournament! (stolen from [@timburgan](https://github.com/timburgan/timburgan))
             
             
 
@@ -503,7 +503,7 @@ jobs:
           # 
           # Add stats 
           # 
-          new_readme.concat "\n If you want to show off your stats check [this repo](https://github.com/anuraghazra/github-readme-stats)\n"
+          new_readme.concat "\n If you want to show off your stats check [this repo](https://github.com/anuraghazra/github-readme-stats)\n\n"
           new_readme.concat "[![Panayiotis github stats](https://github-readme-stats.vercel.app/api?username=Ghost-8D&count_private=true&show_icons=true&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) \n"
           new_readme.concat "[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Ghost-8D&title_color=00b3b3&text_color=00e6e6&icon_color=008080&bg_color=00284d)](https://github.com/anuraghazra/github-readme-stats) \n"
 
