@@ -344,10 +344,10 @@ jobs:
                           'Game terminated. Something went wrong.'
                         end
 
-          #total_moves_played = game_stats[:moves].values.sum
+          total_moves_played = game_stats[:moves]
           #completed_games = metadata[:completed_games]
           #game_winning_players = metadata[:game_winning_players].sort_by { |_, wins| -wins }
-          # ![](https://img.shields.io/badge/Moves%20played-#{total_moves_played}-blue)
+          # 
           # ![](https://img.shields.io/badge/Completed%20games-#{completed_games}-brightgreen)
           # ![](https://img.shields.io/badge/Total%20players-#{metadata[:all_players].size}-orange)
 
@@ -364,7 +364,7 @@ jobs:
 
 
             ## :game_die: Join my Community Chess Tournament! (stolen from [@timburgan](https://github.com/timburgan/timburgan))
-            
+            ![](https://img.shields.io/badge/Moves%20played-#{total_moves_played}-blue)
             
 
             **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black' : 'white'} piece.
@@ -405,6 +405,30 @@ jobs:
 
             new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
           end
+          
+          new_readme.concat "\n\n|   | A | B | C | D | E | F | G | H |\n"
+          new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
+          (1..8).to_a.each_with_index do |row|
+            a = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
+            b = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
+            c = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
+            d = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
+            e = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
+            f = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
+            g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
+            h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
+
+            # a = game.board[board[:"#{row}"][:a]]
+            # b = game.board[board[:"#{row}"][:b]]
+            # c = game.board[board[:"#{row}"][:c]]
+            # d = game.board[board[:"#{row}"][:d]]
+            # e = game.board[board[:"#{row}"][:e]]
+            # f = game.board[board[:"#{row}"][:f]]
+            # g = game.board[board[:"#{row}"][:g]]
+            # h = game.board[board[:"#{row}"][:h]]
+
+            new_readme.concat "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} |\n"
+          end
 
 
           if game.over?
@@ -440,7 +464,7 @@ jobs:
 
             Raise an [issue](https://github.com/#{ENV.fetch('REPOSITORY')}/issues), and include the text _cc @Ghost-8D_.
 
-            **Last few moves, this game**
+            ** :alarm_clock: Most recent moves of this game (from recent to older)**
 
             | Move  | Who |
             | ----- | --- |
