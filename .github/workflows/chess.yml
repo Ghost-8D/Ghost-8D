@@ -406,8 +406,13 @@ jobs:
             f = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
             g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
             h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
-
-            new_readme.concat "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+            
+            if (game.board.active_color)
+              row_order = "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} |\n"
+            else
+              row_order = "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+            end
+            new_readme.concat row_order
           end
           
 
