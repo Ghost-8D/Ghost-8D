@@ -372,7 +372,7 @@ jobs:
 
           HTML
 
-          if (game.board.active_color)
+          if game.board.active_color?
             board = {
               "1": { a: 56, b: 57, c: 58, d: 59, e: 60, f: 61, g: 62, h: 63 },
               "2": { a: 48, b: 49, c: 50, d: 51, e: 52, f: 53, g: 54, h: 55 },
