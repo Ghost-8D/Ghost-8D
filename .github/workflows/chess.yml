@@ -39,7 +39,7 @@ jobs:
       shell: bash
 
     - name: Play
+      run: ruby scripts/play.rb
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ruby scripts/play.rb
 
