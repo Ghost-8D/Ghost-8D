@@ -44,5 +44,6 @@ jobs:
     - name: Play
       run: |
         echo "Let's play!"
+        ls
         ruby play.rb
         
