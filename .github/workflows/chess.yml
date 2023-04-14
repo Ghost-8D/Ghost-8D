@@ -42,5 +42,6 @@ jobs:
 
 
     - name: Play
-      run: ruby functions.rb
+      run: |
+        ruby play.rb
         

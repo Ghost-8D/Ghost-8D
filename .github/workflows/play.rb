@@ -15,7 +15,7 @@ def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
 @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
 @octokit.close_issue(repo_nwo, issue_num)
 if e.present?
- puts '-----------'
+    puts '-----------'
     puts "Exception: #{e}"
     puts '-----------'
 end
@@ -341,9 +341,9 @@ new_readme = <<~HTML
 HTML
 
 if (game.board.active_color)
-loop_range = (1..8).to_a
+    loop_range = (1..8).to_a
 else
-loop_range = (1..8).to_a.reverse_each
+    loop_range = (1..8).to_a.reverse_each
 end
 
 board = {
@@ -358,29 +358,29 @@ board = {
 }
 
 if (game.board.active_color)
-header = "|   | H | G | F | E | D | C | B | A |\n"
+    header = "|   | H | G | F | E | D | C | B | A |\n"
 else
-header = "|   | A | B | C | D | E | F | G | H |\n"
+    header = "|   | A | B | C | D | E | F | G | H |\n"
 end
 
 new_readme.concat header
 new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
 loop_range.each_with_index do |row|
-a = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
-b = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
-c = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
-d = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
-e = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
-f = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
-g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
-h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
+    a = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
+    b = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
+    c = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:c]] || 'blank').to_s}.png)"
+    d = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:d]] || 'blank').to_s}.png)"
+    e = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:e]] || 'blank').to_s}.png)"
+    f = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:f]] || 'blank').to_s}.png)"
+    g = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:g]] || 'blank').to_s}.png)"
+    h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
 
-if (game.board.active_color)
-    row_order = "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} |\n"
-else
-    row_order = "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
-end
-new_readme.concat row_order
+    if (game.board.active_color)
+        row_order = "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} |\n"
+    else
+        row_order = "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+    end
+    new_readme.concat row_order
 end
 
 
