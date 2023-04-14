@@ -22,13 +22,13 @@ def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
 end
 
 def valid_new_game_request(game)
-    ENV['ISSUE_TITLE'].split('|')&.second.to_s == 'new' &&
+    ENV.fetch('ISSUE_TITLE').split('|')&.second.to_s == 'new' &&
     (ENV.fetch('EVENT_USER_LOGIN') == 'Ghost-8D' || game&.over?)
 end
 
 # Authenticate using GITHUB_TOKEN
 # @octokit = Octokit::Client.new(access_token: "${{ secrets.GITHUB_TOKEN }}")
-@octokit = Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'])
+@octokit = Octokit::Client.new(access_token: ENV.fetch('GITHUB_TOKEN'))
 @octokit.auto_paginate = true
 @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
 # Show we've got eyes on the triggering comment.
@@ -51,7 +51,7 @@ end
 # ------------------------
 begin
     # validate we can parse title Chess|new|e3c2|1
-    title_split = ENV['ISSUE_TITLE'].split('|')
+    title_split = ENV.fetch('ISSUE_TITLE').split('|')
     CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s
     CHESS_GAME_TITLE = title_split&.first.to_s + CHESS_GAME_NUM
     CHESS_GAME_CMD   = title_split&.second.to_s
