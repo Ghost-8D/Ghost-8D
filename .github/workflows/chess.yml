@@ -50,7 +50,8 @@ jobs:
         git config --global user.name 'Ghost'
         git config --global user.email 'ghost@users.noreply.github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git commit -am "updated chess board"
+        git add .
+        git commit -m "updated chess board"
         git push
 
 
