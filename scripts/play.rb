@@ -365,7 +365,7 @@ else
 end
 
 new_readme.concat header
-new_readme.concat "| - | - | - | - | - | - | - | - | - |\n"
+new_readme.concat "| - | - | - | - | - | - | - | - | - | - |\n"
 loop_range.each_with_index do |row|
     a = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:a]] || 'blank').to_s}.png)"
     b = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:b]] || 'blank').to_s}.png)"
