@@ -33,7 +33,8 @@ jobs:
         gem install chess -v 0.3.3 -N --silent
 
     - name: Check Path
-      run: echo $(ls)
+      run: echo $PATH
+      shell: bash
 
     - name: Play
       run: ruby play.rb
