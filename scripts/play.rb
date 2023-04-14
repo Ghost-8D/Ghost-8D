@@ -6,8 +6,8 @@ require 'chess'
 
 
 @preview_headers = [
-::Octokit::Preview::PREVIEW_TYPES[:reactions],
-::Octokit::Preview::PREVIEW_TYPES[:integrations]
+    ::Octokit::Preview::PREVIEW_TYPES[:reactions],
+    ::Octokit::Preview::PREVIEW_TYPES[:integrations]
 ]
 
 def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
@@ -58,7 +58,7 @@ begin
     raise StandardError.new 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
     raise StandardError.new 'CHESS_USER_MOVE is blank'  if CHESS_USER_MOVE.blank? && CHESS_GAME_CMD == 'move'
     raise StandardError.new 'new|move are the only allowed commands' unless ['new','move'].include? CHESS_GAME_CMD
-    rescue StandardError => e
+rescue StandardError => e
     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} The game title or move was unable to be parsed."
     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
     exit(0)
@@ -81,52 +81,52 @@ begin
     )
 
     game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
-    rescue StandardError => e
+rescue StandardError => e
     # no file exists... so no game... so... go ahead and create it
     game = Chess::Game.new
 else
     game = if valid_new_game_request(game) || game.present?
             Chess::Game.new
-    else
-        #
-        # Game is in progress. Load the game board.
-        # ---------------------------------------
-        begin
-            ## Load the current game
-            File.write TMP_FILENAME, game_content
-            Chess::Game.load_pgn TMP_FILENAME
-        rescue StandardError => e
-            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
-            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-            exit(0)
+        else
+            #
+            # Game is in progress. Load the game board.
+            # ---------------------------------------
+            begin
+                ## Load the current game
+                File.write TMP_FILENAME, game_content
+                Chess::Game.load_pgn TMP_FILENAME
+            rescue StandardError => e
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
+            end
         end
-    end
 end
 
 if valid_new_game_request(game) && game_content_raw.present?
-begin
-    @octokit.delete_contents(
-        ENV.fetch('REPOSITORY'),
-        GAME_DATA_PATH,
-        "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
-        game_content_raw&.sha,
-        branch: 'master',
-    )
+    begin
+        @octokit.delete_contents(
+            ENV.fetch('REPOSITORY'),
+            GAME_DATA_PATH,
+            "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
+            game_content_raw&.sha,
+            branch: 'master',
+        )
     rescue StandardError => e
-    comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
-    error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-    exit(0)
-end
+        comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
+        error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+        exit(0)
+    end
 end
 
 
 
 begin
-issues = @octokit.list_issues(
-    ENV.fetch('REPOSITORY'),
-    state: 'closed',
-    accept: @preview_headers
-)&.select{ |issue| issue&.reactions.confused == 0 }
+    issues = @octokit.list_issues(
+        ENV.fetch('REPOSITORY'),
+        state: 'closed',
+        accept: @preview_headers
+    )&.select{ |issue| issue&.reactions.confused == 0 }
 
 rescue StandardError => e
 # don't exit, if these can't be retrieved. Allow play to continue.
@@ -143,16 +143,16 @@ if CHESS_GAME_CMD == 'move'
 
     i = 0
     issues&.each do |issue|
-    break if issue.title.start_with? 'chess|new'
-    if issue.title.start_with?('chess|move|') && ENV.fetch('REPOSITORY') == 'Ghost-8D/Ghost-8D'
-        if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
-            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/Ghost-8D)"
-            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-            exit(0)
+        break if issue.title.start_with? 'chess|new'
+        if issue.title.start_with?('chess|move|') && ENV.fetch('REPOSITORY') == 'Ghost-8D/Ghost-8D'
+            if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
+                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/Ghost-8D)"
+                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+                exit(0)
+            end
+            i += 1
         end
-        i += 1
-    end
-    break if i >= 1
+        break if i >= 1
     end
 
 
@@ -193,25 +193,25 @@ if CHESS_GAME_CMD == 'move'
     # Game over thanks for playing.
     # ---------------------------------------
     if game.over?
-    # add label = end
-    #@octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
-    game_stats = { moves: 0, players: [], start_time: nil, end_time: nil }
-    issues&.each do |issue|
-        break if issue.title.start_with? 'chess|new'
-        if game_stats[:moves] == 0
-            game_stats[:end_time] = issue.created_at
-        end
+        # add label = end
+        #@octokit.add_labels_to_an_issue(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), ["game-over"])
+        game_stats = { moves: 0, players: [], start_time: nil, end_time: nil }
+        issues&.each do |issue|
+            break if issue.title.start_with? 'chess|new'
+            if game_stats[:moves] == 0
+                game_stats[:end_time] = issue.created_at
+            end
             game_stats[:moves] += 1
-        if ENV.fetch('REPOSITORY') == 'Ghost-8D/Ghost-8D'
-            game_stats[:players].push "@#{issue.user.login}"
-        else
-            game_stats[:players].push "#{issue.user.login}"
+            if ENV.fetch('REPOSITORY') == 'Ghost-8D/Ghost-8D'
+                game_stats[:players].push "@#{issue.user.login}"
+            else
+                game_stats[:players].push "#{issue.user.login}"
+            end
+            game_stats[:start_time] = issue.created_at
         end
-        game_stats[:start_time] = issue.created_at
-    end
-    game_stats[:players] = game_stats[:players]&.uniq
-    hours = (game_stats[:start_time] - game_stats[:end_time]).to_i.abs / 3600
-    @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. That game had #{game_stats[:moves]} moves, #{game_stats[:players]&.length} players, and went for #{hours} hours. Let's play again at https://github.com/Ghost-8D.\n\nPlayers that game: #{game_stats[:players].join(', ')}")
+        game_stats[:players] = game_stats[:players]&.uniq
+        hours = (game_stats[:start_time] - game_stats[:end_time]).to_i.abs / 3600
+        @octokit.add_comment(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), "That's game over! Thank you for playing that chess game. That game had #{game_stats[:moves]} moves, #{game_stats[:players]&.length} players, and went for #{hours} hours. Let's play again at https://github.com/Ghost-8D.\n\nPlayers that game: #{game_stats[:players].join(', ')}")
     end
 end
 
@@ -249,43 +249,43 @@ puts next_move_combos
 fake_game = if CHESS_GAME_CMD == 'move'
                 File.write TMP_FILENAME, game.pgn.to_s
                 Chess::Game.load_pgn TMP_FILENAME
-                else
+            else
                 Chess::Game.new
             end
 
 # delete squares not valid for next move
 good_moves = []
 next_move_combos.each do |square|
-square[:to].each do |to|
-    move_command = "#{square[:from]}#{to}"
-    fake_game_tmp = if CHESS_GAME_CMD == 'move'
-                        File.write TMP_FILENAME, fake_game.pgn.to_s
-                        Chess::Game.load_pgn TMP_FILENAME
-                    else
-                        Chess::Game.new
-                    end
-    begin
-        fake_game_tmp.move move_command
+    square[:to].each do |to|
+        move_command = "#{square[:from]}#{to}"
+        fake_game_tmp = if CHESS_GAME_CMD == 'move'
+                            File.write TMP_FILENAME, fake_game.pgn.to_s
+                            Chess::Game.load_pgn TMP_FILENAME
+                        else
+                            Chess::Game.new
+                        end
+        begin
+            fake_game_tmp.move move_command
         rescue Chess::IllegalMoveError => e
-        # puts "move: #{move_command} (bad)"
+            # puts "move: #{move_command} (bad)"
         else
-        # puts "move: #{move_command} (ok)"
-        if good_moves.select{ |move| move[:from] == square[:from] }.blank?
-            good_moves.push({ from: square[:from], to: [to] })
-        else
-            good_moves.map do |move|
-            if move[:from] == square[:from]
-                {
-                from: move[:from],
-                to:   move[:to].push(to)
-                }
+            # puts "move: #{move_command} (ok)"
+            if good_moves.select{ |move| move[:from] == square[:from] }.blank?
+                good_moves.push({ from: square[:from], to: [to] })
             else
-                move
-            end
+                good_moves.map do |move|
+                    if move[:from] == square[:from]
+                        {
+                            from: move[:from],
+                            to:   move[:to].push(to)
+                        }
+                    else
+                        move
+                    end
+                end
             end
         end
     end
-end
 end
 
 
@@ -322,21 +322,21 @@ game_state =  case game.status.to_s
 
 new_readme = <<~HTML
 
-### Hi there, I'm [Panayiotis!](https://panayiotisleon1.wixsite.com/eportfolio) 👋
+    ### Hi there, I'm [Panayiotis!](https://panayiotisleon1.wixsite.com/eportfolio) 👋
 
-- 🔭 I’m currently working as a Full-Stack Developer at a small AI Company.
-- 🌱 I’m currently learning marketing, business and Auto-GPT (AI) concepts.
-- 👯 I’m looking to collaborate on interesting projects.
-- 💬 Ask me about anything (and let's hope I can answer your question 😄).
-- 📫 How to reach me: [LinkedIn](https://www.linkedin.com/in/panayiotis-leon/)
-- ⚡ Fun fact: Upcoming trillionaire ...
-
-
-## :game_die: Join my Community Chess Tournament! (stolen from [@timburgan](https://github.com/timburgan/timburgan))
+    - 🔭 I’m currently working as a Full-Stack Developer at a small AI Company.
+    - 🌱 I’m currently learning marketing, business and Auto-GPT (AI) concepts.
+    - 👯 I’m looking to collaborate on interesting projects.
+    - 💬 Ask me about anything (and let's hope I can answer your question 😄).
+    - 📫 How to reach me: [LinkedIn](https://www.linkedin.com/in/panayiotis-leon/)
+    - ⚡ Fun fact: Upcoming trillionaire ...
 
 
+    ## :game_die: Join my Community Chess Tournament! (stolen from [@timburgan](https://github.com/timburgan/timburgan))
 
-**#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black (solid)' : 'white (hollow)'} piece.
+
+
+    **#{game_state}** This is open to ANYONE to play the next move. That's the point. :wave:  It's your turn! Move a #{(game.board.active_color) ? 'black (solid)' : 'white (hollow)'} piece.
 
 HTML
 
@@ -347,14 +347,14 @@ else
 end
 
 board = {
-"8": { a: 56, b: 57, c: 58, d: 59, e: 60, f: 61, g: 62, h: 63 },
-"7": { a: 48, b: 49, c: 50, d: 51, e: 52, f: 53, g: 54, h: 55 },
-"6": { a: 40, b: 41, c: 42, d: 43, e: 44, f: 45, g: 46, h: 47 },
-"5": { a: 32, b: 33, c: 34, d: 35, e: 36, f: 37, g: 38, h: 39 },
-"4": { a: 24, b: 25, c: 26, d: 27, e: 28, f: 29, g: 30, h: 31 },
-"3": { a: 16, b: 17, c: 18, d: 19, e: 20, f: 21, g: 22, h: 23 },
-"2": { a:  8, b:  9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
-"1": { a:  0, b:  1, c:  2, d:  3, e:  4, f:  5, g:  6, h:  7 },
+    "8": { a: 56, b: 57, c: 58, d: 59, e: 60, f: 61, g: 62, h: 63 },
+    "7": { a: 48, b: 49, c: 50, d: 51, e: 52, f: 53, g: 54, h: 55 },
+    "6": { a: 40, b: 41, c: 42, d: 43, e: 44, f: 45, g: 46, h: 47 },
+    "5": { a: 32, b: 33, c: 34, d: 35, e: 36, f: 37, g: 38, h: 39 },
+    "4": { a: 24, b: 25, c: 26, d: 27, e: 28, f: 29, g: 30, h: 31 },
+    "3": { a: 16, b: 17, c: 18, d: 19, e: 20, f: 21, g: 22, h: 23 },
+    "2": { a:  8, b:  9, c: 10, d: 11, e: 12, f: 13, g: 14, h: 15 },
+    "1": { a:  0, b:  1, c:  2, d:  3, e:  4, f:  5, g:  6, h:  7 },
 }
 
 if (game.board.active_color)
@@ -385,42 +385,42 @@ end
 
 
 if game.over?
-new_readme.concat <<~HTML
+    new_readme.concat <<~HTML
 
-    ## Play again? [![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/new_game.png)](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cnew&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)
+        ## Play again? [![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/new_game.png)](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cnew&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)
 
-HTML
+    HTML
 else
+    new_readme.concat <<~HTML
+
+        #### **#{(game.board.active_color) ? 'BLACK (solid)' : 'WHITE (hollow)'}:** It's your move... to choose _where_ to move...
+
+        | FROM | TO - _just click one of the links_ :) |
+        | ---- | -- |
+    HTML
+
+    good_moves.each do |move|
+        new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
+    end
+end
+
+
 new_readme.concat <<~HTML
 
-    #### **#{(game.board.active_color) ? 'BLACK (solid)' : 'WHITE (hollow)'}:** It's your move... to choose _where_ to move...
+    Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/Ghost-8D)
 
-    | FROM | TO - _just click one of the links_ :) |
-    | ---- | -- |
-HTML
+    **How this works**
 
-good_moves.each do |move|
-    new_readme.concat "| **#{move[:from].upcase}** | #{move[:to].map{|a| "[#{a.upcase}](https://github.com/#{ENV.fetch('REPOSITORY')}/issues/new?title=chess%7Cmove%7C#{move[:from]}#{a}%7C#{CHESS_GAME_NUM}&body=Just+push+%27Submit+new+issue%27.+You+don%27t+need+to+do+anything+else.)"}.join(' , ')} |\n"
-end
-end
+    When you click a link, it opens a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a [GitHub Actions](https://github.blog/2020-07-03-github-action-hero-casey-lee/#getting-started-with-github-actions) workflow that'll update my GitHub Profile _README.md_ with the new state of the board.
 
+    **Notice a problem?**
 
-new_readme.concat <<~HTML
+    Raise an [issue](https://github.com/#{ENV.fetch('REPOSITORY')}/issues), and include the text _cc @Ghost-8D_.
 
-Ask a friend to take the next move: [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+Can+you+please+take+the+next+move+at+https://github.com/Ghost-8D)
+    :alarm_clock: **Most recent moves of this game (from recent to older)**
 
-**How this works**
-
-When you click a link, it opens a GitHub Issue with the required pre-populated text. Just push "Create New Issue". That will trigger a [GitHub Actions](https://github.blog/2020-07-03-github-action-hero-casey-lee/#getting-started-with-github-actions) workflow that'll update my GitHub Profile _README.md_ with the new state of the board.
-
-**Notice a problem?**
-
-Raise an [issue](https://github.com/#{ENV.fetch('REPOSITORY')}/issues), and include the text _cc @Ghost-8D_.
-
-:alarm_clock: **Most recent moves of this game (from recent to older)**
-
-| Move  | Who |
-| ----- | --- |
+    | Move  | Who |
+    | ----- | --- |
 HTML
 
 new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2..3].to_s.upcase} | [@#{ENV.fetch('EVENT_USER_LOGIN')}](https://github.com/#{ENV.fetch('EVENT_USER_LOGIN')}) |\n"
@@ -428,15 +428,15 @@ new_readme.concat "| #{CHESS_USER_MOVE[0..1].to_s.upcase} to #{CHESS_USER_MOVE[2
 if issues.present? # just in case, the API is down, or there's no response, don't let that prevent the game rendering
     i = 0
     issues.each do |issue|
-    break if issue.title.start_with? 'chess|new'
-    if issue.title.start_with? 'chess|move|'
-        from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
-        to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
-        who = issue.user.login
-        i += 1
-        new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
-    end
-    break if i >= 4
+        break if issue.title.start_with? 'chess|new'
+        if issue.title.start_with? 'chess|move|'
+            from = issue.title&.split('|')&.third.to_s[0..1].to_s.upcase
+            to = issue.title&.split('|')&.third.to_s[2..3].to_s.upcase
+            who = issue.user.login
+            i += 1
+            new_readme.concat "| #{from} to #{to} | [@#{who}](https://github.com/#{who}) |\n"
+        end
+        break if i >= 4
     end
 else
     new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
@@ -445,16 +445,16 @@ end
 
 new_readme.concat <<~HTML
 
-:trophy: **Top 20 Leaderboard: Most moves across all games, except me.**
+    :trophy: **Top 20 Leaderboard: Most moves across all games, except me.**
 
-| Moves | Who |
-| ----- | --- |
+    | Moves | Who |
+    | ----- | --- |
 HTML
 
 if issues.present?
     moves = issues.select{|issue| issue.title.start_with? 'chess|move|'}.map{ |issue| issue.user.login }&.group_by(&:itself)&.except("Ghost-8D")&.transform_values(&:size).sort_by{|name,moves| moves }.reverse[0..19]
     moves.each do |move|
-    new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
+        new_readme.concat "| #{move[1]} | [@#{move[0]}](https://github.com/#{move[0]}) |\n"
     end
 else
     new_readme.concat "| ¯\\_(ツ)_/¯ | History temporarily unavailable. |\n"
@@ -490,17 +490,17 @@ new_readme.concat "\n [![Most Used Languages](https://github-readme-stats.vercel
 # ---------------------------------------
 begin
     current_readme_sha = @octokit.contents(
-    ENV.fetch('REPOSITORY'),
-    path: 'README.md'
+        ENV.fetch('REPOSITORY'),
+        path: 'README.md'
     )&.sha
 
     @octokit.create_contents(
-    ENV.fetch('REPOSITORY'),
-    'README.md',
-    "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
-    new_readme,
-    branch: 'master',
-    sha:    current_readme_sha
+        ENV.fetch('REPOSITORY'),
+        'README.md',
+        "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+        new_readme,
+        branch: 'master',
+        sha:    current_readme_sha
     )
 rescue StandardError => e
     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't update render of the game board. Move *was* saved, however."
