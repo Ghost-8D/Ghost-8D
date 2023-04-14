@@ -359,9 +359,9 @@ board = {
 }
 
 if (game.board.active_color)
-    header = "|   | H | G | F | E | D | C | B | A |\n"
+    header = "|   | H | G | F | E | D | C | B | A |   |\n"
 else
-    header = "|   | A | B | C | D | E | F | G | H |\n"
+    header = "|   | A | B | C | D | E | F | G | H |   |\n"
 end
 
 new_readme.concat header
