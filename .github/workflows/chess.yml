@@ -41,7 +41,5 @@ jobs:
     - name: Play
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo $(ls scripts)
-        ruby scripts/play.rb
+      run: ruby scripts/play.rb
 
