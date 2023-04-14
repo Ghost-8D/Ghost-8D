@@ -37,6 +37,5 @@ jobs:
       shell: bash
 
     - name: Play
-      run: ruby play.rb
-      working-directory: scripts
+      run: ruby scripts/play.rb
 
