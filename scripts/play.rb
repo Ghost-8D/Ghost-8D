@@ -11,19 +11,19 @@ require 'chess'
 ]
 
 def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
-# @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
-@octokit.add_comment(repo_nwo, issue_num, new_comment_body)
-@octokit.close_issue(repo_nwo, issue_num)
-if e.present?
-    puts '-----------'
-    puts "Exception: #{e}"
-    puts '-----------'
-end
+    # @octokit.create_issue_reaction(repo_nwo, issue_num, reaction, {accept: @preview_headers})
+    @octokit.add_comment(repo_nwo, issue_num, new_comment_body)
+    @octokit.close_issue(repo_nwo, issue_num)
+    if e.present?
+        puts '-----------'
+        puts "Exception: #{e}"
+        puts '-----------'
+    end
 end
 
 def valid_new_game_request(game)
-'${{ github.event.issue.title }}'.split('|')&.second.to_s == 'new' &&
-(ENV.fetch('EVENT_USER_LOGIN') == 'Ghost-8D' || game&.over?)
+    '${{ github.event.issue.title }}'.split('|')&.second.to_s == 'new' &&
+    (ENV.fetch('EVENT_USER_LOGIN') == 'Ghost-8D' || game&.over?)
 end
 
 # Authenticate using GITHUB_TOKEN
@@ -32,16 +32,16 @@ end
 @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
 # Show we've got eyes on the triggering comment.
 @octokit.create_issue_reaction(
-ENV.fetch('REPOSITORY'),
-ENV.fetch('EVENT_ISSUE_NUMBER'),
-'eyes',
-{accept: @preview_headers}
+    ENV.fetch('REPOSITORY'),
+    ENV.fetch('EVENT_ISSUE_NUMBER'),
+    'eyes',
+    {accept: @preview_headers}
 )
 @octokit.create_issue_reaction(
-ENV.fetch('REPOSITORY'),
-ENV.fetch('EVENT_ISSUE_NUMBER'),
-'rocket',
-{accept: @preview_headers}
+    ENV.fetch('REPOSITORY'),
+    ENV.fetch('EVENT_ISSUE_NUMBER'),
+    'rocket',
+    {accept: @preview_headers}
 )
 
 
@@ -58,7 +58,7 @@ begin
     raise StandardError.new 'CHESS_GAME_TITLE is blank' if CHESS_GAME_TITLE.blank?
     raise StandardError.new 'CHESS_USER_MOVE is blank'  if CHESS_USER_MOVE.blank? && CHESS_GAME_CMD == 'move'
     raise StandardError.new 'new|move are the only allowed commands' unless ['new','move'].include? CHESS_GAME_CMD
-rescue StandardError => e
+    rescue StandardError => e
     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} The game title or move was unable to be parsed."
     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
     exit(0)
@@ -76,43 +76,43 @@ game_content = nil
 # ---------------------------------------
 begin
     game_content_raw = @octokit.contents(
-    ENV.fetch('REPOSITORY'),
-    path: GAME_DATA_PATH
+        ENV.fetch('REPOSITORY'),
+        path: GAME_DATA_PATH
     )
 
     game_content = Base64.decode64(game_content_raw&.content.to_s) unless game_content_raw&.content.to_s.blank?
-rescue StandardError => e
+    rescue StandardError => e
     # no file exists... so no game... so... go ahead and create it
     game = Chess::Game.new
 else
-game = if valid_new_game_request(game) || game.present?
+    game = if valid_new_game_request(game) || game.present?
             Chess::Game.new
-        else
-            #
-            # Game is in progress. Load the game board.
-            # ---------------------------------------
-            begin
-                ## Load the current game
-                File.write TMP_FILENAME, game_content
-                Chess::Game.load_pgn TMP_FILENAME
-            rescue StandardError => e
-                comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
-                error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-                exit(0)
-            end
+    else
+        #
+        # Game is in progress. Load the game board.
+        # ---------------------------------------
+        begin
+            ## Load the current game
+            File.write TMP_FILENAME, game_content
+            Chess::Game.load_pgn TMP_FILENAME
+        rescue StandardError => e
+            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't loaded: #{GAME_DATA_PATH}"
+            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+            exit(0)
         end
+    end
 end
 
 if valid_new_game_request(game) && game_content_raw.present?
 begin
     @octokit.delete_contents(
-    ENV.fetch('REPOSITORY'),
-    GAME_DATA_PATH,
-    "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
-    game_content_raw&.sha,
-    branch: 'master',
+        ENV.fetch('REPOSITORY'),
+        GAME_DATA_PATH,
+        "@#{ENV.fetch('EVENT_USER_LOGIN')} delete to allow new game",
+        game_content_raw&.sha,
+        branch: 'master',
     )
-rescue StandardError => e
+    rescue StandardError => e
     comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Game data couldn't be deleted: #{GAME_DATA_PATH}"
     error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
     exit(0)
@@ -146,9 +146,9 @@ if CHESS_GAME_CMD == 'move'
     break if issue.title.start_with? 'chess|new'
     if issue.title.start_with?('chess|move|') && ENV.fetch('REPOSITORY') == 'Ghost-8D/Ghost-8D'
         if issue.user.login == ENV.fetch('EVENT_USER_LOGIN')
-        comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/Ghost-8D)"
-        error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
-        exit(0)
+            comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Slow down! You _just_ moved, so can't immediately take the next turn. Invite a friend to take the next turn! [Share on Twitter...](https://twitter.com/share?text=I'm+playing+chess+on+a+GitHub+Profile+Readme!+I+just+moved.+You+have+the+next+move+at+https://github.com/Ghost-8D)"
+            error_notification(ENV.fetch('REPOSITORY'), ENV.fetch('EVENT_ISSUE_NUMBER'), 'confused', comment_text, e)
+            exit(0)
         end
         i += 1
     end
@@ -174,12 +174,12 @@ if CHESS_GAME_CMD == 'move'
     # ---------------------------------------
     begin
         @octokit.create_contents(
-        ENV.fetch('REPOSITORY'),
-        GAME_DATA_PATH,
-        "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
-        game.pgn.to_s,
-        branch: 'master',
-        sha:    game_content_raw&.sha
+            ENV.fetch('REPOSITORY'),
+            GAME_DATA_PATH,
+            "#{ENV.fetch('EVENT_USER_LOGIN')} move #{CHESS_USER_MOVE}",
+            game.pgn.to_s,
+            branch: 'master',
+            sha:    game_content_raw&.sha
         )
     rescue StandardError => e
         comment_text = "@#{ENV.fetch('EVENT_USER_LOGIN')} Couldn't save game data. Sorry."
@@ -199,13 +199,13 @@ if CHESS_GAME_CMD == 'move'
     issues&.each do |issue|
         break if issue.title.start_with? 'chess|new'
         if game_stats[:moves] == 0
-        game_stats[:end_time] = issue.created_at
+            game_stats[:end_time] = issue.created_at
         end
-        game_stats[:moves] += 1
+            game_stats[:moves] += 1
         if ENV.fetch('REPOSITORY') == 'Ghost-8D/Ghost-8D'
-        game_stats[:players].push "@#{issue.user.login}"
+            game_stats[:players].push "@#{issue.user.login}"
         else
-        game_stats[:players].push "#{issue.user.login}"
+            game_stats[:players].push "#{issue.user.login}"
         end
         game_stats[:start_time] = issue.created_at
     end
@@ -236,9 +236,9 @@ rows = (1..8).to_a
 # list squares on the board - format a1, a2, a3, b1, b2, b3 etc
 squares = []
 cols.each do |col|
-rows.each do |row|
-    squares.push "#{col}#{row}"
-end
+    rows.each do |row|
+        squares.push "#{col}#{row}"
+    end
 end
 
 # combine squares with where they  can MOVE to
@@ -247,10 +247,10 @@ puts "next_move_combos"
 puts next_move_combos
 
 fake_game = if CHESS_GAME_CMD == 'move'
-            File.write TMP_FILENAME, game.pgn.to_s
-            Chess::Game.load_pgn TMP_FILENAME
-            else
-            Chess::Game.new
+                File.write TMP_FILENAME, game.pgn.to_s
+                Chess::Game.load_pgn TMP_FILENAME
+                else
+                Chess::Game.new
             end
 
 # delete squares not valid for next move
@@ -259,31 +259,31 @@ next_move_combos.each do |square|
 square[:to].each do |to|
     move_command = "#{square[:from]}#{to}"
     fake_game_tmp = if CHESS_GAME_CMD == 'move'
-                    File.write TMP_FILENAME, fake_game.pgn.to_s
-                    Chess::Game.load_pgn TMP_FILENAME
+                        File.write TMP_FILENAME, fake_game.pgn.to_s
+                        Chess::Game.load_pgn TMP_FILENAME
                     else
-                    Chess::Game.new
+                        Chess::Game.new
                     end
     begin
-    fake_game_tmp.move move_command
-    rescue Chess::IllegalMoveError => e
-    # puts "move: #{move_command} (bad)"
-    else
-    # puts "move: #{move_command} (ok)"
-    if good_moves.select{ |move| move[:from] == square[:from] }.blank?
-        good_moves.push({ from: square[:from], to: [to] })
-    else
-        good_moves.map do |move|
-        if move[:from] == square[:from]
-            {
-            from: move[:from],
-            to:   move[:to].push(to)
-            }
+        fake_game_tmp.move move_command
+        rescue Chess::IllegalMoveError => e
+        # puts "move: #{move_command} (bad)"
         else
-            move
+        # puts "move: #{move_command} (ok)"
+        if good_moves.select{ |move| move[:from] == square[:from] }.blank?
+            good_moves.push({ from: square[:from], to: [to] })
+        else
+            good_moves.map do |move|
+            if move[:from] == square[:from]
+                {
+                from: move[:from],
+                to:   move[:to].push(to)
+                }
+            else
+                move
+            end
+            end
         end
-        end
-    end
     end
 end
 end
