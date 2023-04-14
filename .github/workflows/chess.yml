@@ -37,5 +37,7 @@ jobs:
       shell: bash
 
     - name: Play
-      run: ruby scripts/play.rb
+      run: |
+        echo $(ls)
+        ruby scripts/play.rb
 
