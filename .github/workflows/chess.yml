@@ -44,4 +44,6 @@ jobs:
       run: |
         echo $(ls scripts)
         ruby scripts/play.rb
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
