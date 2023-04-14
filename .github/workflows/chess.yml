@@ -40,6 +40,8 @@ jobs:
 
     - name: Play
       run: |
-        echo $(ls)
+        echo $(ls scripts)
         ruby scripts/play.rb
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
 
