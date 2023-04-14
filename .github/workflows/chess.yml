@@ -33,6 +33,8 @@ jobs:
         gem install chess -v 0.3.3 -N --silent
 
     - uses: actions/checkout@v2
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Check Path
       run: echo $PWD
@@ -42,6 +44,4 @@ jobs:
       run: |
         echo $(ls scripts)
         ruby scripts/play.rb
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
 
