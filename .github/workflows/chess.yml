@@ -32,7 +32,7 @@ jobs:
         gem install octokit -v 5.1.0 -N --silent
         gem install chess -v 0.3.3 -N --silent
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Check Path
       run: echo $PWD
@@ -42,4 +42,11 @@ jobs:
       run: ruby scripts/play.rb
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Commit and push changes to README.md
+      run: |
+        git add README.md
+        git commit -m "updated chess board"
+        git push
+
 
