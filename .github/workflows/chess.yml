@@ -32,6 +32,8 @@ jobs:
         gem install octokit -v 5.1.0 -N --silent
         gem install chess -v 0.3.3 -N --silent
 
+    - uses: actions/checkout@v2
+
     - name: Check Path
       run: echo $PWD
       shell: bash
