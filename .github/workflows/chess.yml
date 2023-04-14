@@ -36,28 +36,24 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
 
-    - name: Check Path
-      run: echo $PWD
-      shell: bash
-
     - name: Play
       run: ruby scripts/play.rb
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
 
-    - name: Check for modified files
-      id: git-check
-      run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
+    # - name: Check for modified files
+    #   id: git-check
+    #   run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
 
-    - name: Update Chess Board
-      if: steps.git-check.outputs.modified == 'true'
-      run: |
-        git config --global user.name 'Ghost'
-        git config --global user.email 'ghost@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git add .
-        git commit -m "updated chess board"
-        git push
+    # - name: Update Chess Board
+    #   if: steps.git-check.outputs.modified == 'true'
+    #   run: |
+    #     git config --global user.name 'Ghost'
+    #     git config --global user.email 'ghost@users.noreply.github.com'
+    #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+    #     git add .
+    #     git commit -m "updated chess board"
+    #     git push
 
 
