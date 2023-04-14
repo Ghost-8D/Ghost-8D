@@ -31,12 +31,12 @@ end
 @octokit.auto_paginate = true
 @octokit.default_media_type = ::Octokit::Preview::PREVIEW_TYPES[:integrations]
 # Show we've got eyes on the triggering comment.
-@octokit.create_issue_reaction(
-    ENV.fetch('REPOSITORY'),
-    ENV.fetch('EVENT_ISSUE_NUMBER'),
-    'eyes',
-    {accept: @preview_headers}
-)
+# @octokit.create_issue_reaction(
+#     ENV.fetch('REPOSITORY'),
+#     ENV.fetch('EVENT_ISSUE_NUMBER'),
+#     'eyes',
+#     {accept: @preview_headers}
+# )
 @octokit.create_issue_reaction(
     ENV.fetch('REPOSITORY'),
     ENV.fetch('EVENT_ISSUE_NUMBER'),
