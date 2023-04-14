@@ -32,6 +32,9 @@ jobs:
         gem install octokit -v 5.1.0 -N --silent
         gem install chess -v 0.3.3 -N --silent
 
+    - name: Check Path
+      run: echo $(ls)
+
     - name: Play
       run: ruby play.rb
       working-directory: scripts
