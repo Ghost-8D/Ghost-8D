@@ -22,7 +22,7 @@ def error_notification(repo_nwo, issue_num, reaction, new_comment_body, e=nil)
 end
 
 def valid_new_game_request(game)
-    '${{ github.event.issue.title }}'.split('|')&.second.to_s == 'new' &&
+    ENV['ISSUE_TITLE'].split('|')&.second.to_s == 'new' &&
     (ENV.fetch('EVENT_USER_LOGIN') == 'Ghost-8D' || game&.over?)
 end
 
@@ -51,7 +51,7 @@ end
 # ------------------------
 begin
     # validate we can parse title Chess|new|e3c2|1
-    title_split = '${{ github.event.issue.title }}'.split('|')
+    title_split = ENV['ISSUE_TITLE'].split('|')
     CHESS_GAME_NUM   = title_split&.fourth || ENV.fetch('EVENT_ISSUE_NUMBER').to_s
     CHESS_GAME_TITLE = title_split&.first.to_s + CHESS_GAME_NUM
     CHESS_GAME_CMD   = title_split&.second.to_s
