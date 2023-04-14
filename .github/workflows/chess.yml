@@ -51,7 +51,7 @@ jobs:
       run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
 
     - name: Update Chess Board
-      #if: steps.git-check.outputs.modified == 'true'
+      if: steps.git-check.outputs.modified == 'true'
       run: |
         git config --global user.name 'Ghost'
         git config --global user.email 'ghost@users.noreply.github.com'
