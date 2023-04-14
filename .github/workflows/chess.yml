@@ -43,6 +43,6 @@ jobs:
 
     - name: Play
       run: |
-        ls
+        ls -l
         ruby play.rb
         
