@@ -377,13 +377,13 @@ loop_range.each_with_index do |row|
     h = "![](https://raw.githubusercontent.com/#{ENV.fetch('REPOSITORY')}/master/chess_images/#{(game.board[board[:"#{row}"][:h]] || 'blank').to_s}.png)"
 
     if (game.board.active_color)
-        row_order = "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} |\n"
+        row_order = "| #{row} | #{h} | #{g} | #{f} | #{e} | #{d} | #{c} | #{b} | #{a} | #{row} |\n"
     else
-        row_order = "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} |\n"
+        row_order = "| #{row} | #{a} | #{b} | #{c} | #{d} | #{e} | #{f} | #{g} | #{h} | #{row} |\n"
     end
     new_readme.concat row_order
 end
-
+new_readme.concat header
 
 if game.over?
     new_readme.concat <<~HTML
